@@ -1,0 +1,9 @@
+#!/bin/bash
+#SBATCH --job-name=XRISM_Data_Download
+#SBATCH --output=XRISMData_output.log
+#SBATCH --error=XRISMData_error.log
+#SBATCH --time=12:00:00
+#SBATCH --ntasks=2
+#SBATCH --cpus-per-task=1
+
+bash xrismDownload https://heasarc.gsfc.nasa.gov/FTP/xrism/data/obs/0

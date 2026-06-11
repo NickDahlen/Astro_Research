@@ -1,0 +1,38 @@
+#Now we begin the loop over all entries in our directory. Currently we're locked into only using the 0 directory.
+for fileNo in $(curl -s "$1" | grep -oE '[0-9]{6,}/')
+do
+echo "running process for $fileNo"
+
+#Now we download the file and move into it
+wget -nv -m -np -nH --cut-dirs=5 -R "index.html*" --execute robots=off --wait=1 $1/$fileNo
+cd $fileNo/resolve/event_cl
+
+#Unzip everything
+gunzip *.gz
+gunzip ../../auxil /*.gz
+gunzip ../event_uf/*.gz
+gunzip ../products/*.gz
+
+#Now let's use xselect to grab the .pi file
+printf "read events\nno\nread events xa%srsl_p0px1000_cl.evt\n.\nfilter GRADE "0:0"\nextr spectrum\nsave spectrum\n outputFile.pi\nexit\nno\n" "$fileNo" | xselect
+
+#And now the rmf file!
+punlearn rslmkrmf
+rslmkrmf infile=xa%srsl_p0px1000_cl.evt outfileroot=outputFile regmode=DET whichrmf=L resolist=0 regionfile=ALLPIX "$fileNo"
+
+#And finally the .arf file. This one takes a little bit more doing
+punlearn xaexpmap
+xaexpmap ehkfile=../../auxil/xa%s.ehk gtifile=xa%srsl_p0px1000_cl.evt instrume=RESOLVE badimgfile=NONE pixgtifile=../event_uf/xa%srsl_px1000_exp.gti outfile=N132D_rsl.expo outmaptype=EXPOSURE delta=20.0 \
+numphi=1 "$fileNo"
+
+punlearn xaarfgen
+xaarfgen xrtevtfile=raytrace_N132D_rsl_pt.fits source_ra=81.2596 source_dec=-69.6441 telescop=XRISM instrume=RESOLVE emapfile=N132D_rsl.expo regmode=DET regionfile=../products/xa%srsl_det_fullarray.reg s\
+ourcetype=POINT rmffile=outfile.rmf erange="1.5 18.0 0 0" outfile=outputFile.arf numphoton=300000 qefile=CALDB contamifile=CALDB gatevalvefile=CALDB onaxisffile=CALDB onaxiscfile=CALDB mirrorfile=CALDB o\
+bstructfile=CALDB frontreffile=CALDB backreffile=CALDB pcolreffile=CALDB scatterfile=CALDB imgfile=NONE
+
+
+#Now we exit the directory and continue the loop
+cd ../../..
+echo "completed process for $fileNo"
+
+done
