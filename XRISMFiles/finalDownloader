@@ -52,9 +52,10 @@ mv outputFile.pi $fileNo
 echo "Moving to the rmf file!"
 
 punlearn rslmkrmf
-echo "xa${fileNo}rsl_p0px1000_cl.evt"
-echo $fileNo/resolve/event_cl/*
-
+echo "$fileNo"
+echo "$fileNo/resolve/event_cl/xa${fileNo}rsl_p0px1000_cl.evt"
+ls -l "$fileNo/resolve/event_cl/xa${fileNo}rsl_p0px1000_cl.evt"
+fkeyprint "$fileNo/resolve/event_cl/xa${fileNo}rsl_p0px1000_cl.evt[EVENTS]" TELESCOP
 
 rslmkrmf infile=$fileNo/resolve/event_cl/xa${fileNo}rsl_p0px1000_cl.evt outfileroot=$fileNo/outputFile regmode=DET whichrmf=L resolist=0 regionfile=ALLPIX
 
