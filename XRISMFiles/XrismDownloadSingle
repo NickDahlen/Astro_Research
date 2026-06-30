@@ -3,7 +3,7 @@
 echo "starting up!"
 
 
-wget -nv -m -np -nH --cut-dirs=5 -R "index.html*" --execute robots=off --wait=1 https://heasarc.gsfc.nasa.gov/FTP/xrism/data/obs/0/$1/
+wget -nv -m -np -nH --cut-dirs=5 -R "index.html*" --execute robots=off --wait=1 https://heasarc.gsfc.nasa.gov/FTP/xrism/data/obs/2/$1/
 
 
 #Unzip everything
