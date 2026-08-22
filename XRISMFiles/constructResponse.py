@@ -19,6 +19,8 @@ def construct_response(fits_file_dir, fits_arf_dir, min_val = 1.e-6, nustar = Fa
         
         cout_de = cout_max - cout_min # [keV]
 
+    print("Accessed the basic components")
+        
     if not ROSAT:
         with fits.open(fits_arf_dir) as arf:
             # Extract the effective area as a function of input energy
@@ -32,6 +34,8 @@ def construct_response(fits_file_dir, fits_arf_dir, min_val = 1.e-6, nustar = Fa
     # At the same time we also multiply in the effective area through, combining
     # to give the full detector response
     # NB: this matrix is stored in a sparse format, so we have to reconstruct it
+
+    print("Digging into the rmf for real now")
     
     with fits.open(fits_file_dir) as rmf:
 

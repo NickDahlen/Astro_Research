@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+# Usage: ./check_missing.sh /path/to/parent filename
+
+parent_dir="${1:-.}"
+target_file="$2"
+
+if [[ -z "$target_file" ]]; then
+    echo "Usage: $0 /path/to/parent filename"
+    exit 1
+fi
+
+for dir in "$parent_dir"/*/; do
+    # Skip if no directories match
+    [[ -d "$dir" ]] || continue
+
+    if [[ ! -f "$dir/$target_file" ]]; then
+        basename "$dir"
+    fi
+done
