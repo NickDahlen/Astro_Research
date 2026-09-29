@@ -1,0 +1,20 @@
+#!/bin/bash
+
+#Wipe the old files
+python fileEraser.py
+
+#Now run the desired number of instances of the sim
+iterations=$1
+
+for ((i=1; i<iterations; i++))
+do
+    echo "Running iteration $i"
+    sbatch \
+    --job-name="p9Sim$i" \
+    --output="astroLog$i.log" \
+    --error="astroLog$i.log" \
+    runP9MassRun.sh $i 31000 1 15000 10000
+    
+done
+
+echo "Done!"
