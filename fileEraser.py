@@ -1,0 +1,6 @@
+open("cleanEjectionRuns.txt", "w").close()
+open("noActivityRuns.txt", "w").close()
+open("offResonanceRuns.txt", "w").close()
+open("P9Summary.txt", "w").close()
+open("perturbedRuns.txt", "w").close()
+open("writeData.txt", "w").close()
